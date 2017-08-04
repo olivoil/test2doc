@@ -49,7 +49,9 @@ func NewRequest(req *http.Request) (*Request, error) {
 	if filter != "" {
 		f := strings.Split(filter, ";")
 		for _, h := range f {
-			req.Header.Del(h)
+			if h != "" {
+				req.Header.Del(h)
+			}
 		}
 	}
 	req.Header.Del(FilterHeader)
