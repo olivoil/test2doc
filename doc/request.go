@@ -60,6 +60,7 @@ func NewRequest(req *http.Request) (*Request, error) {
 		}
 	}
 	req.Header.Del(FilterHeader)
+	header.Del(FilterHeader)
 
 	body1, body2, err := cloneBody(req.Body)
 	if err != nil {
