@@ -45,12 +45,17 @@ func NewRequest(req *http.Request) (*Request, error) {
 	title := req.Header.Get(TitleHeader)
 	req.Header.Del(TitleHeader)
 
+	header := http.Header{}
+	for k, _ := range req.Header {
+		header.Set(k, req.Header.Get(k))
+	}
+
 	filter := req.Header.Get(FilterHeader)
 	if filter != "" {
 		f := strings.Split(filter, ";")
 		for _, h := range f {
 			if h != "" {
-				req.Header.Del(h)
+				header.Del(h)
 			}
 		}
 	}
@@ -67,7 +72,7 @@ func NewRequest(req *http.Request) (*Request, error) {
 	contentType := req.Header.Get("Content-Type")
 
 	return &Request{
-		Header: NewHeader(req.Header),
+		Header: NewHeader(header),
 		Body:   NewBody(b2bytes, contentType),
 		Method: req.Method,
 		Description: desc,
